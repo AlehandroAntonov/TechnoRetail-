@@ -94,27 +94,5 @@ interface WishListItem {
   product: Product;
 }
 
-
-declare module "next-auth" {
-  interface Session {
-    user: {
-      id: string;
-      name: string;
-      email: string;
-      image: string;
-      role: string;
-    };
-  }
-
-  interface User {
-    id: string;
-    role: string;
-  }
-}
-
-declare module "next-auth/jwt" {
-  interface JWT {
-    id: string;
-    role: string;
-  }
-}
+// NextAuth module augmentation moved to types/next-auth.d.ts so it augments
+// (rather than replaces) the next-auth module. See that file for details.

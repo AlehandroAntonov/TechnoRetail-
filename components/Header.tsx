@@ -31,8 +31,8 @@ const Header = () => {
   const { wishlist, setWishlist, wishQuantity } = useWishlistStore();
 
   const handleLogout = () => {
-    setTimeout(() => signOut(), 1000);
     toast.success("Logout successful!");
+    signOut({ callbackUrl: "/" });
   };
 
   // getting all wishlist items by user id
@@ -124,8 +124,14 @@ const Header = () => {
                 <li>
                   <a>Profile</a>
                 </li>
-                <li onClick={handleLogout}>
-                  <a href="#">Logout</a>
+                <li>
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="w-full text-left"
+                  >
+                    Logout
+                  </button>
                 </li>
               </ul>
             </div>

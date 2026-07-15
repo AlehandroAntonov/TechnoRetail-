@@ -86,6 +86,21 @@ npm run dev                                     # 3. frontend :3000 (из кор
 - **Прод-сборка (`npm run build`)** проходит; dev-режим медленный при первом заходе на страницу (компиляция на лету) — это нормально, прод в разы быстрее.
 - **`dotenv` и `express-rate-limit`** нужны бэкенду (используются в `app.js`/middleware) — уже в `server/package.json`.
 
+## Рабочий процесс: ветки и Pull Request
+
+Каждая фича/тикет — **отдельная ветка и отдельный PR** (не коммит напрямую в `main`).
+
+- Ветка: `feature/scrum-<N>-<short-slug>` (напр. `feature/scrum-5-promo-code`).
+- Открывать PR через `gh` (GitHub CLI установлен):
+  ```bash
+  gh pr create --base main --head <branch> --title "SCRUM-<N> <title>" --body-file <file>
+  ```
+- Тело PR — по шаблону `.github/pull_request_template.md`: что реализовано,
+  ссылка на тикет SCRUM-<N>, шаги проверки, acceptance criteria.
+- **QA-чекбокс в PR отмечается вручную** после реального end-to-end тестирования —
+  это запись о проведённой проверке, а не формальность. Автопрохождение QA не настраиваем.
+- После мержа: `git checkout main && git pull`, затем `git branch -d <branch>`.
+
 ## Конвенции кода
 
 - API-вызовы с фронта — через `apiClient` из `@/lib/api` (`apiClient.get/post/put/delete`), не голый `fetch`.

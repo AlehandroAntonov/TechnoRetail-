@@ -32,3 +32,6 @@ temp/
 
 # Logs
 *.log
+
+# Generated OpenAPI spec (produced by: npm run docs:generate)
+openapi.json

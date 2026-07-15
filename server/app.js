@@ -19,6 +19,8 @@ const notificationsRouter = require('./routes/notifications');
 const merchantRouter = require('./routes/merchant'); // Add this line
 const bulkUploadRouter = require('./routes/bulkUpload');
 const promoCodesRouter = require('./routes/promoCodes');
+const swaggerUi = require('swagger-ui-express');
+const { swaggerSpec } = require('./swagger');
 var cors = require("cors");
 
 // Import logging middleware
@@ -133,6 +135,15 @@ app.use("/api/notifications", notificationsRouter);
 app.use("/api/merchants", merchantRouter); 
 app.use("/api/bulk-upload", bulkUploadRouter);
 app.use("/api/promo", promoCodesRouter);
+
+// API documentation (Swagger UI + raw OpenAPI spec)
+app.get('/api-docs.json', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(swaggerSpec);
+});
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  customSiteTitle: 'TechnoRetail API docs',
+}));
 
 // Health check endpoint (no rate limiting)
 app.get('/health', (req, res) => {

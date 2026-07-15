@@ -10,25 +10,129 @@ const {
   getUnreadCount
 } = require('../controllers/notificationController');
 
-// GET /api/notifications/:userId/unread-count - Get unread notification count
+/**
+ * @openapi
+ * /api/notifications/{userId}/unread-count:
+ *   get:
+ *     tags: [Notifications]
+ *     summary: Get unread notification count for a user
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema: { type: string }
+ *     responses:
+ *       200:
+ *         description: Unread count
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties: { unreadCount: { type: integer } }
+ */
 router.get('/:userId/unread-count', getUnreadCount);
 
-// GET /api/notifications/:userId - Get user notifications with filtering and pagination
+/**
+ * @openapi
+ * /api/notifications/{userId}:
+ *   get:
+ *     tags: [Notifications]
+ *     summary: Get notifications for a user (with filtering/pagination)
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema: { type: string }
+ *     responses:
+ *       200:
+ *         description: The user's notifications
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items: { $ref: '#/components/schemas/Notification' }
+ */
 router.get('/:userId', getUserNotifications);
 
-// POST /api/notifications - Create new notification
+/**
+ * @openapi
+ * /api/notifications:
+ *   post:
+ *     tags: [Notifications]
+ *     summary: Create a notification
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema: { $ref: '#/components/schemas/Notification' }
+ *     responses:
+ *       201: { description: Notification created }
+ */
 router.post('/', createNotification);
 
-// POST /api/notifications/mark-read - Bulk mark notifications as read
+/**
+ * @openapi
+ * /api/notifications/mark-read:
+ *   post:
+ *     tags: [Notifications]
+ *     summary: Bulk mark notifications as read
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               ids: { type: array, items: { type: string } }
+ *     responses:
+ *       200: { description: Notifications marked as read }
+ */
 router.post('/mark-read', bulkMarkAsRead);
 
-// DELETE /api/notifications/bulk - Bulk delete notifications
+/**
+ * @openapi
+ * /api/notifications/bulk:
+ *   delete:
+ *     tags: [Notifications]
+ *     summary: Bulk delete notifications
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               ids: { type: array, items: { type: string } }
+ *     responses:
+ *       200: { description: Notifications deleted }
+ */
 router.delete('/bulk', bulkDeleteNotifications);
 
-// PUT /api/notifications/:id - Update notification (mark as read/unread)
+/**
+ * @openapi
+ * /api/notifications/{id}:
+ *   put:
+ *     tags: [Notifications]
+ *     summary: Update a notification (mark read/unread)
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
+ *     responses:
+ *       200: { description: Notification updated }
+ *   delete:
+ *     tags: [Notifications]
+ *     summary: Delete a single notification
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
+ *     responses:
+ *       204: { description: Notification deleted }
+ */
 router.put('/:id', updateNotification);
-
-// DELETE /api/notifications/:id - Delete single notification
 router.delete('/:id', deleteNotification);
 
 module.exports = router;

@@ -19,6 +19,19 @@ Full-stack e-commerce: **Next.js 15 (App Router)** фронтенд + **Node.js/
 - Админка `/admin/*` защищена `middleware.ts` (требует JWT с `role === "admin"`).
 - Обе части читают **одну** `DATABASE_URL`; у каждой свой `.env` (корневой + `server/.env`).
 
+## API-документация (Swagger / OpenAPI)
+
+Контракт живёт в коде: OpenAPI-спека собирается из `@openapi` JSDoc-аннотаций
+над роутами (`server/routes/*.js`), общие схемы — в `server/swagger.js`.
+
+- **Swagger UI:** `http://localhost:3001/api-docs` (при запущенном backend)
+- **Сырой JSON:** `http://localhost:3001/api-docs.json`
+- **Статический файл:** `cd server && npm run docs:generate` → `server/openapi.json`
+  (для Postman/Insomnia/кодогенераторов). Файл производный, в git не коммитится —
+  перегенерируй при изменении API.
+
+Добавляя новый роут — добавь рядом `@openapi`-блок, тогда документация обновится сама.
+
 ## Первичная установка (один раз)
 
 ```bash

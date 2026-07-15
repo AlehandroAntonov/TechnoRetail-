@@ -9,10 +9,18 @@ export type ProductInCart = {
   amount: number;
 };
 
+export type AppliedPromo = {
+  code: string;
+  discountType: string; // "percentage" | "fixed"
+  discountValue: number;
+  discount: number; // absolute discount amount computed at apply time
+};
+
 export type State = {
   products: ProductInCart[];
   allQuantity: number;
   total: number;
+  promo: AppliedPromo | null;
 };
 
 export type Actions = {
@@ -21,6 +29,8 @@ export type Actions = {
   updateCartAmount: (id: string, quantity: number) => void;
   calculateTotals: () => void;
   clearCart: () => void;
+  applyPromo: (promo: AppliedPromo) => void;
+  removePromo: () => void;
 };
 
 export const useProductStore = create<State & Actions>()(
@@ -29,6 +39,7 @@ export const useProductStore = create<State & Actions>()(
       products: [],
       allQuantity: 0,
       total: 0,
+      promo: null,
       addToCart: (newProduct) => {
         set((state) => {
           const cartItem = state.products.find(
@@ -48,13 +59,20 @@ export const useProductStore = create<State & Actions>()(
       },
       clearCart: () => {
         set((state: any) => {
-          
+
           return {
             products: [],
             allQuantity: 0,
             total: 0,
+            promo: null,
           };
         });
+      },
+      applyPromo: (promo) => {
+        set(() => ({ promo }));
+      },
+      removePromo: () => {
+        set(() => ({ promo: null }));
       },
       removeFromCart: (id) => {
         set((state) => {

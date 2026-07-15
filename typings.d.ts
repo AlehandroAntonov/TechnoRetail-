@@ -74,6 +74,8 @@ interface Order {
   country: string;
   orderNotice: string?;
   total: number;
+  promoCode: string?;
+  discount: number?;
 }
 
 interface SingleProductBtnProps {

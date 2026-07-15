@@ -78,6 +78,8 @@ async function createCustomerOrder(request, response) {
         country: validatedData.country,
         orderNotice: validatedData.orderNotice,
         total: validatedData.total,
+        promoCode: request.body.promoCode || null,
+        discount: typeof request.body.discount === 'number' ? request.body.discount : 0,
         dateTime: new Date()
       },
     });
@@ -231,6 +233,8 @@ async function updateCustomerOrder(request, response) {
         country: validatedData.country,
         orderNotice: validatedData.orderNotice,
         total: validatedData.total,
+        promoCode: request.body.promoCode !== undefined ? request.body.promoCode : existingOrder.promoCode,
+        discount: typeof request.body.discount === 'number' ? request.body.discount : existingOrder.discount,
       },
     });
 

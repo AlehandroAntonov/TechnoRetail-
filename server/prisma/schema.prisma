@@ -67,7 +67,20 @@ model Customer_order {
   country     String
   orderNotice String?
   total       Int
+  promoCode   String?
+  discount    Int?                     @default(0)
   products    customer_order_product[]
+}
+
+model PromoCode {
+  id             String    @id @default(uuid())
+  code           String    @unique
+  discountType   String    @default("percentage") // "percentage" | "fixed"
+  discountValue  Int       @default(0)
+  validUntil     DateTime?
+  isActive       Boolean   @default(true)
+  minOrderAmount Int       @default(0)
+  createdAt      DateTime  @default(now())
 }
 
 model customer_order_product {

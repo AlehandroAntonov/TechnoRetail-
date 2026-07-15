@@ -86,6 +86,30 @@ npm run dev                                     # 3. frontend :3000 (из кор
 - **Прод-сборка (`npm run build`)** проходит; dev-режим медленный при первом заходе на страницу (компиляция на лету) — это нормально, прод в разы быстрее.
 - **`dotenv` и `express-rate-limit`** нужны бэкенду (используются в `app.js`/middleware) — уже в `server/package.json`.
 
+## Рабочий процесс: ветки и Pull Request
+
+Каждая фича/тикет — **отдельная ветка и отдельный PR** (не коммит напрямую в `main`).
+
+- Ветка: `feature/scrum-<N>-<short-slug>` (напр. `feature/scrum-5-promo-code`).
+- Открывать PR через `gh` (GitHub CLI установлен):
+  ```bash
+  gh pr create --base main --head <branch> --title "SCRUM-<N> <title>" --body-file <file>
+  ```
+- Тело PR — по шаблону `.github/pull_request_template.md`: что реализовано,
+  ссылка на тикет SCRUM-<N>, шаги проверки, acceptance criteria.
+- **QA-ревью — вручную и только после реального end-to-end тестирования.**
+  GitHub не даёт назначить автора PR его же ревьюером (`--reviewer <ты>` тихо
+  игнорируется, когда ты и автор). Поэтому «историю ревью» фиксируем self-review:
+  ```bash
+  # после того как фича реально протестирована:
+  gh pr review <N> --approve  -b "QA passed: <что проверено>"
+  # или, если нашлись проблемы:
+  gh pr review <N> --request-changes -b "<что не так, шаги воспроизведения>"
+  ```
+  Плюс отмечаем QA-чекбокс в теле PR. Это запись о проведённой проверке, а не
+  формальность — не аппрувим PR, пока фича не протестирована.
+- После мержа: `git checkout main && git pull`, затем `git branch -d <branch>`.
+
 ## Конвенции кода
 
 - API-вызовы с фронта — через `apiClient` из `@/lib/api` (`apiClient.get/post/put/delete`), не голый `fetch`.

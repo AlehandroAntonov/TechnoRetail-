@@ -15,7 +15,8 @@
     "migrate:backup": "node scripts/migration-validator.js backup",
     "migrate:safe": "node scripts/migration-validator.js safe-migrate",
     "db:backup": "node scripts/backup-database.js",
-    "db:restore": "node scripts/restore-database.js"
+    "db:restore": "node scripts/restore-database.js",
+    "docs:generate": "node scripts/generate-openapi.js"
   },
   "keywords": [],
   "author": "",
@@ -36,6 +37,8 @@
     "nanoid": "^5.0.6",
     "node-fetch": "^3.3.2",
     "prisma": "6.16.3",
+    "swagger-jsdoc": "^6.3.0",
+    "swagger-ui-express": "^5.0.1",
     "winston": "^3.8.2"
   }
 }

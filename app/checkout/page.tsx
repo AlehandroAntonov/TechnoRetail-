@@ -25,7 +25,8 @@ const CheckoutPage = () => {
   });
   
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { products, total, clearCart } = useProductStore();
+  const { products, total, clearCart, promo } = useProductStore();
+  const discount = promo?.discount || 0;
   const router = useRouter();
 
   // Add validation functions that match server requirements
@@ -160,6 +161,8 @@ const CheckoutPage = () => {
         city: checkoutForm.city.trim(),
         country: checkoutForm.country.trim(),
         orderNotice: checkoutForm.orderNotice.trim(),
+        promoCode: promo?.code || null,
+        discount: discount,
         userId: userId // Add user ID for notifications
       };
 
@@ -396,10 +399,18 @@ const CheckoutPage = () => {
                 <dt className="text-gray-600">Taxes</dt>
                 <dd>${total / 5}</dd>
               </div>
+              {discount > 0 && (
+                <div className="flex items-center justify-between">
+                  <dt className="text-green-700">
+                    Discount{promo?.code ? ` (${promo.code})` : ""}
+                  </dt>
+                  <dd className="text-green-700">-${discount}</dd>
+                </div>
+              )}
               <div className="flex items-center justify-between border-t border-gray-200 pt-6">
                 <dt className="text-base">Total</dt>
                 <dd className="text-base">
-                  ${total === 0 ? 0 : Math.round(total + total / 5 + 5)}
+                  ${total === 0 ? 0 : Math.round(total + total / 5 + 5 - discount)}
                 </dd>
               </div>
             </dl>

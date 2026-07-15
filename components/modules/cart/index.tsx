@@ -7,11 +7,14 @@ import Link from "next/link";
 import { FaCheck, FaCircleQuestion, FaClock, FaXmark } from "react-icons/fa6";
 import QuantityInputCart from "@/components/QuantityInputCart";
 import { sanitize } from "@/lib/sanitize";
+import PromoCodeInput from "@/components/PromoCodeInput";
 
 export const CartModule = () => {
 
-  const { products, removeFromCart, calculateTotals, total } =
+  const { products, removeFromCart, calculateTotals, total, promo } =
     useProductStore();
+
+  const discount = promo?.discount || 0;
 
   const handleRemoveItem = (id: string) => {
     removeFromCart(id);
@@ -159,15 +162,29 @@ export const CartModule = () => {
               ${total / 5}
             </dd>
           </div>
+          {discount > 0 && (
+            <div className="flex items-center justify-between border-t border-gray-200 pt-4">
+              <dt className="flex text-sm text-green-700">
+                <span>Discount{promo?.code ? ` (${promo.code})` : ""}</span>
+              </dt>
+              <dd className="text-sm font-medium text-green-700">
+                -${discount}
+              </dd>
+            </div>
+          )}
           <div className="flex items-center justify-between border-t border-gray-200 pt-4">
             <dt className="text-base font-medium text-gray-900">
               Order total
             </dt>
             <dd className="text-base font-medium text-gray-900">
-              ${total === 0 ? 0 : Math.round(total + total / 5 + 5)}
+              ${total === 0 ? 0 : Math.round(total + total / 5 + 5 - discount)}
             </dd>
           </div>
         </dl>
+
+        <div className="mt-6">
+          <PromoCodeInput />
+        </div>
         {products.length > 0 && (
           <div className="mt-6">
             <Link

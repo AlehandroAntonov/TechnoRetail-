@@ -45,6 +45,8 @@ const AdminSingleOrder = () => {
     orderNotice: "",
     status: "processing",
     total: 0,
+    promoCode: null,
+    discount: 0,
   });
   const params = useParams<{ id: string }>();
 
@@ -368,8 +370,14 @@ const AdminSingleOrder = () => {
             <p className="text-2xl">Subtotal: ${order?.total}</p>
             <p className="text-2xl">Tax 20%: ${order?.total / 5}</p>
             <p className="text-2xl">Shipping: $5</p>
+            {order?.discount ? (
+              <p className="text-2xl text-green-700">
+                Discount{order?.promoCode ? ` (${order.promoCode})` : ""}: -$
+                {order.discount}
+              </p>
+            ) : null}
             <p className="text-3xl font-semibold">
-              Total: ${order?.total + order?.total / 5 + 5}
+              Total: ${order?.total + order?.total / 5 + 5 - (order?.discount || 0)}
             </p>
           </div>
           <div className="flex gap-x-2 max-sm:flex-col mt-5">
